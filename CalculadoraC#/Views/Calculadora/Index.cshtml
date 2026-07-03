@@ -1,0 +1,22 @@
+﻿@model CalculadoraC_.ViewModels.CalculadoraViewModel
+@{
+    ViewData["Title"] = "Calculadora PRO MAX";
+}
+
+<div class="text-center">
+    <h1>Calculadora PRO MAX Profesional</h1>
+    <p>Mi calculadora .NET Core MVC.</p>
+    <form>
+        <input type="number" asp-for="Numero1" placeholder="Número 1" />
+        <input type="number" asp-for="Numero2" placeholder="Número 2" />
+        <option value="">Seleccione una operación</option>
+        <select asp-for="Operacion">    
+           <option value="+">Sumar </option>
+           <option value="-">Restar</option>
+           <option value="*">Multiplicar</option>
+           <option value="/">Dividir</option>
+        </select>
+        <input type="number" asp-for="Resultado" placeholder="Resultado" readonly />
+        <button type="submit">Calcular</button>
+    </form>
+</div>
