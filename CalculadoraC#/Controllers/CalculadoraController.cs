@@ -1,10 +1,19 @@
 ﻿using CalculadoraC_.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using CalculadoraC_.Interfaces;
+using CalculadoraC_.Services;
 
 namespace CalculadoraC_.Controllers
 {
     public class CalculadoraController : Controller
     {
+        private readonly ICalculadoraService _calculadoraService;
+
+        public CalculadoraController(ICalculadoraService calculadoraService)
+        {
+            _calculadoraService = calculadoraService;
+        }
+
         [HttpGet]
         public IActionResult Index()
         {
@@ -16,24 +25,9 @@ namespace CalculadoraC_.Controllers
         [HttpPost]
         public IActionResult Index(CalculadoraViewModel model)
         {
-            switch (model.Operacion)
-            {
-                case "suma":
-                    model.Resultado = model.Numero1 + model.Numero2;
-                    break;
-                case "resta":
-                    model.Resultado = model.Numero1 - model.Numero2;
-                    break;
-                case "multiplicacion":
-                    model.Resultado = model.Numero1 * model.Numero2;
-                    break;
-                case "division":
-                    if (model.Numero2 != 0)
-                    {
-                        model.Resultado = model.Numero1 / model.Numero2;
-                    }
-                    break;
-            }
+            var modelo = model;
+
+            modelo.Resultado = _calculadoraService.Calcular(modelo.Numero1, modelo.Numero2, modelo.Operacion);
 
             return View(model);
         }
