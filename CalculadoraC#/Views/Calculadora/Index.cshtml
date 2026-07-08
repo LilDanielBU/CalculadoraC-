@@ -1,22 +1,123 @@
 ﻿@model CalculadoraC_.ViewModels.CalculadoraViewModel
 @{
-    ViewData["Title"] = "Calculadora PRO MAX";
+    ViewData["Title"] = "Calculadora PRO MAX Ultra";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1>Calculadora PRO MAX Profesional</h1>
-    <p>Mi calculadora .NET Core MVC.</p>
-    <form asp-action="Index" method="post">
-        <input type="number" asp-for="Numero1" placeholder="Número 1" />
-        <input type="number" asp-for="Numero2" placeholder="Número 2" />
-        <option value="">Seleccione una operación</option>
-        <select asp-for="Operacion">
-            <option value="+">Sumar </option>
-            <option value="-">Restar</option>
-            <option value="*">Multiplicar</option>
-            <option value="/">Dividir</option>
-        </select>
-        <input type="number" asp-for="Resultado" placeholder="Resultado" readonly />
-        <button type="submit">Calcular</button>
-    </form>
+<!-- Enlazar CSS y JS -->
+<link rel="stylesheet" href="~/css/calculadora.css" asp-append-version="true" />
+<script src="~/js/calculadora.js" asp-append-version="true" defer></script>
+
+<div class="calculator-container">
+    <div class="calculator-wrapper">
+        <!-- Header -->
+        <div class="calculator-header">
+            <h1 class="neon-title">⚡ CALCULADORA PRO MAX ULTRA ⚡</h1>
+            <p class="subtitle">🔥 Potencia y precisión en cada cálculo 🔥</p>
+        </div>
+
+        <!-- Formulario -->
+        <form asp-controller="Calculadora" 
+              asp-action="Index" 
+              method="post" 
+              class="calculator-form"
+              id="calculatorForm">
+            
+            <div class="input-group-container">
+                <!-- Número 1 -->
+                <div class="input-group-modern">
+                    <div class="input-label-wrapper">
+                        <span class="input-icon">🔢</span>
+                        <label asp-for="Numero1" class="input-label">Primer número</label>
+                    </div>
+                    <input type="number" 
+                           asp-for="Numero1" 
+                           class="form-control-modern" 
+                           placeholder="Ingresa un número"
+                           step="any"
+                           required />
+                    <span asp-validation-for="Numero1" class="text-danger-modern"></span>
+                </div>
+
+                <!-- Número 2 -->
+                <div class="input-group-modern">
+                    <div class="input-label-wrapper">
+                        <span class="input-icon">🔢</span>
+                        <label asp-for="Numero2" class="input-label">Segundo número</label>
+                    </div>
+                    <input type="number" 
+                           asp-for="Numero2" 
+                           class="form-control-modern" 
+                           placeholder="Ingresa un número"
+                           step="any"
+                           required />
+                    <span asp-validation-for="Numero2" class="text-danger-modern"></span>
+                </div>
+            </div>
+
+            <!-- Operación -->
+            <div class="input-group-modern operation-group">
+                <div class="input-label-wrapper">
+                    <span class="input-icon">🧮</span>
+                    <label asp-for="Operacion" class="input-label">Operación matemática</label>
+                </div>
+                <select asp-for="Operacion" class="form-control-modern select-modern" required>
+                    <option value="">🔽 Selecciona una operación</option>
+                    <option value="+">➕ Sumar</option>
+                    <option value="-">➖ Restar</option>
+                    <option value="*">✖️ Multiplicar</option>
+                    <option value="/">➗ Dividir</option>
+                    <option value="%">💯 Porcentaje</option>
+                    <option value="^">⬆️ Potencia</option>
+                </select>
+                <span asp-validation-for="Operacion" class="text-danger-modern"></span>
+            </div>
+
+            <!-- Resultado -->
+            <div class="input-group-modern result-group">
+                <div class="input-label-wrapper">
+                    <span class="input-icon">🏆</span>
+                    <label asp-for="Resultado" class="input-label">Resultado</label>
+                </div>
+                <div class="result-display @(!double.IsNaN(Model.Resultado) ? "result-active" : "")">
+                    <input type="text" 
+                           value="@Model.Resultado" 
+                           class="form-control-modern result-input" 
+                           readonly 
+                           id="resultInput" />
+                    <span class="result-emoji">✨</span>
+                </div>
+            </div>
+
+            <!-- Errores -->
+            <div asp-validation-summary="ModelOnly" class="text-danger-modern error-summary"></div>
+
+            <!-- Botones -->
+            <div class="button-group">
+                <button type="submit" class="btn-calculate">
+                    <span class="btn-content">
+                        <span class="btn-icon">🚀</span>
+                        <span>CALCULAR</span>
+                        <span class="btn-sparkle">✨</span>
+                    </span>
+                </button>
+                <button type="reset" class="btn-reset" onclick="resetCalculator()">
+                    <span class="btn-content">
+                        <span class="btn-icon">🔄</span>
+                        <span>LIMPIAR</span>
+                    </span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Historial -->
+        <div class="quick-history" id="quickHistory">
+            <span class="history-label">📊 Últimos cálculos:</span>
+            <span class="history-empty">(Los resultados aparecerán aquí)</span>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

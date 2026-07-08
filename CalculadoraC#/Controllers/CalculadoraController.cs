@@ -25,9 +25,14 @@ namespace CalculadoraC_.Controllers
         [HttpPost]
         public IActionResult Index(CalculadoraViewModel model)
         {
-            var modelo = model;
-
-            modelo.Resultado = _calculadoraService.Calcular(modelo.Numero1, modelo.Numero2, modelo.Operacion);
+            try
+            {
+                model.Resultado = _calculadoraService.Calcular(model.Numero1, model.Numero2, model.Operacion);
+            }
+            catch (DivideByZeroException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
 
             return View(model);
         }

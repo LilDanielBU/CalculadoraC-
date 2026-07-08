@@ -1,5 +1,4 @@
 ﻿using CalculadoraC_.Interfaces;
-using CalculadoraC_.ViewModels;
 
 namespace CalculadoraC_.Services
 {
@@ -27,8 +26,9 @@ namespace CalculadoraC_.Services
                         throw new DivideByZeroException("No se puede dividir entre cero.");
                     }
                     return numero1 / numero2;
+                default:
+                    throw new ArgumentException("Operación no válida.");
             }
-            return 0;
         }
 }
 }

@@ -1,7 +1,14 @@
+using CalculadoraC_.Interfaces;
+using CalculadoraC_.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Register the CalculadoraService with the dependency injection container
+
+builder.Services.AddScoped<ICalculadoraService, CalculadoraService>();
 
 var app = builder.Build();
 
@@ -22,7 +29,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Calculadora}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 

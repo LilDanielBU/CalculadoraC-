@@ -1,50 +1,174 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CalculadoraC_</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - Calculadora PRO MAX</title>
+
+    <!-- Favicon (opcional) -->
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+
+    <!-- Fuentes premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap (solo lo necesario) -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Tus estilos personalizados -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/calculadora.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CalculadoraC_.styles.css" asp-append-version="true" />
+
+    <!-- Meta tags para mejor SEO y redes sociales -->
+    <meta name="description" content="Calculadora PRO MAX Ultra - La calculadora más avanzada con .NET Core MVC" />
+    <meta name="author" content="Tu Nombre" />
+    <meta property="og:title" content="Calculadora PRO MAX Ultra" />
+    <meta property="og:description" content="La calculadora más potente y elegante" />
+    <meta property="og:type" content="website" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CalculadoraC_</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+    <!-- ===== NAVBAR MEJORADO ===== -->
+    <nav class="navbar navbar-expand-lg navbar-dark glass-navbar">
+        <div class="container">
+            <a class="navbar-brand brand-glow" asp-area="" asp-controller="Home" asp-action="Index">
+                <span class="brand-icon">🧮</span>
+                <span class="brand-text">Calc<span class="brand-highlight">PRO</span></span>
+                <span class="brand-badge">ULTRA</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-glow @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Calculadora" ? "active" : "")"
+                           asp-area="" asp-controller="Calculadora" asp-action="Index">
+                            <span class="nav-icon">⚡</span> Calculadora
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="Index">
+                            <span class="nav-icon">🏠</span> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Privacy" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="Privacy">
+                            <span class="nav-icon">🔒</span> Privacidad
+                        </a>
+                    </li>
+                </ul>
+                <!-- Botón de tema (opcional) -->
+                <button class="btn-theme-toggle" id="themeToggle" title="Cambiar tema">
+                    <span id="themeIcon">🌙</span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+        </div>
+    </nav>
+
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <div class="main-content">
+        <main role="main" class="container">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- ===== FOOTER MEJORADO ===== -->
+    <footer class="footer-modern">
         <div class="container">
-            &copy; 2026 - CalculadoraC_ - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-icon">🧮</span>
+                    <span class="footer-title">Calculadora PRO MAX</span>
+                    <span class="footer-version">v2.0</span>
+                </div>
+                <div class="footer-links">
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy" class="footer-link">
+                        <span>🔒</span> Privacidad
+                    </a>
+                    <a href="#" class="footer-link" onclick="showAbout()">
+                        <span>ℹ️</span> Acerca de
+                    </a>
+                    <a href="#" class="footer-link" onclick="showShortcuts()">
+                        <span>⌨️</span> Atajos
+                    </a>
+                </div>
+                <div class="footer-copy">
+                    &copy; @DateTime.Now.Year - CalculadoraC_
+                    <span class="footer-heart">❤️</span>
+                </div>
+            </div>
         </div>
     </footer>
+
+    <!-- ===== SCRIPTS ===== -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Scripts adicionales del layout -->
+    <script>
+        // ===== TEMA OSCURO/CLARO =====
+        (function() {
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        // Detectar tema guardado
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+        });
+        }
+
+        function updateThemeIcon(theme) {
+        if (themeIcon) {
+        themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+        }
+        }
+        })();
+
+        // ===== FUNCIONES GLOBALES =====
+        function showAbout() {
+        alert('🧮 Calculadora PRO MAX ULTRA v2.0\n\n' +
+        '✨ Características:\n' +
+        '• Operaciones básicas y avanzadas\n' +
+        '• Historial de cálculos\n' +
+        '• Atajos de teclado\n' +
+        '• Tema oscuro/claro\n' +
+        '• Diseño responsive\n\n' +
+        '🔧 Tecnologías:\n' +
+        '• ASP.NET Core MVC\n' +
+        '• Bootstrap 5\n' +
+        '• CSS3 con animaciones\n' +
+        '• JavaScript puro\n\n' +
+        '© 2026 - Todos los derechos reservados');
+        }
+
+        function showShortcuts() {
+        alert('⌨️ ATAJOS DE TECLADO\n\n' +
+        '• Ctrl + Enter → Calcular\n' +
+        '• Escape → Limpiar formulario\n' +
+        '• Ctrl + H → Ver historial\n' +
+        '• Enter → Enviar formulario (desde inputs)');
+        }
+
+        // ===== EFECTO DE PARTÍCULAS EN EL FONDO (OPCIONAL) =====
+        // Puedes agregar partículas o efectos de fondo aquí
+        console.log('🚀 Calculadora PRO MAX ULTRA cargada');
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
