@@ -2,6 +2,9 @@
 @{
     ViewData["Title"] = "Calculadora PRO MAX Ultra";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Detectar si venimos de un POST para activar el estado del resultado
+    bool tieneResultado = Context.Request.Method == "POST" && ViewData.ModelState.IsValid;
 }
 
 <!-- Enlazar CSS y JS -->
@@ -10,30 +13,32 @@
 
 <div class="calculator-container">
     <div class="calculator-wrapper">
+
         <!-- Header -->
-        <div class="calculator-header">
+        <header class="calculator-header">
             <h1 class="neon-title">⚡ CALCULADORA PRO MAX ULTRA ⚡</h1>
             <p class="subtitle">🔥 Potencia y precisión en cada cálculo 🔥</p>
-        </div>
+        </header>
 
         <!-- Formulario -->
-        <form asp-controller="Calculadora" 
-              asp-action="Index" 
-              method="post" 
+        <form asp-controller="Calculadora"
+              asp-action="Index"
+              method="post"
               class="calculator-form"
-              id="calculatorForm">
-            
+              id="calculatorForm"
+              autocomplete="off">
+
             <div class="input-group-container">
                 <!-- Número 1 -->
                 <div class="input-group-modern">
                     <div class="input-label-wrapper">
-                        <span class="input-icon">🔢</span>
+                        <span class="input-icon" aria-hidden="true">🔢</span>
                         <label asp-for="Numero1" class="input-label">Primer número</label>
                     </div>
-                    <input type="number" 
-                           asp-for="Numero1" 
-                           class="form-control-modern" 
-                           placeholder="Ingresa un número"
+                    <input type="number"
+                           asp-for="Numero1"
+                           class="form-control-modern"
+                           placeholder="Ej: 12.5"
                            step="any"
                            required />
                     <span asp-validation-for="Numero1" class="text-danger-modern"></span>
@@ -42,13 +47,13 @@
                 <!-- Número 2 -->
                 <div class="input-group-modern">
                     <div class="input-label-wrapper">
-                        <span class="input-icon">🔢</span>
+                        <span class="input-icon" aria-hidden="true">🔢</span>
                         <label asp-for="Numero2" class="input-label">Segundo número</label>
                     </div>
-                    <input type="number" 
-                           asp-for="Numero2" 
-                           class="form-control-modern" 
-                           placeholder="Ingresa un número"
+                    <input type="number"
+                           asp-for="Numero2"
+                           class="form-control-modern"
+                           placeholder="Ej: 5"
                            step="any"
                            required />
                     <span asp-validation-for="Numero2" class="text-danger-modern"></span>
@@ -58,11 +63,11 @@
             <!-- Operación -->
             <div class="input-group-modern operation-group">
                 <div class="input-label-wrapper">
-                    <span class="input-icon">🧮</span>
+                    <span class="input-icon" aria-hidden="true">🧮</span>
                     <label asp-for="Operacion" class="input-label">Operación matemática</label>
                 </div>
                 <select asp-for="Operacion" class="form-control-modern select-modern" required>
-                    <option value="">🔽 Selecciona una operación</option>
+                    <option value="" disabled selected>🔽 Selecciona una operación</option>
                     <option value="+">➕ Sumar</option>
                     <option value="-">➖ Restar</option>
                     <option value="*">✖️ Multiplicar</option>
@@ -76,23 +81,27 @@
             <!-- Resultado -->
             <div class="input-group-modern result-group">
                 <div class="input-label-wrapper">
-                    <span class="input-icon">🏆</span>
+                    <span class="input-icon" aria-hidden="true">🏆</span>
                     <label asp-for="Resultado" class="input-label">Resultado</label>
                 </div>
-                <div class="result-display @(!double.IsNaN(Model.Resultado) ? "result-active" : "")">
-                    <input type="text" 
-                           value="@Model.Resultado" 
-                           class="form-control-modern result-input" 
-                           readonly 
-                           id="resultInput" />
-                    <span class="result-emoji">✨</span>
+                <div class="result-display @(tieneResultado ? "result-active" : "")">
+                    <input type="text"
+                           value="@(tieneResultado ? Model.Resultado.ToString("G29") : "")"
+                           class="form-control-modern result-input"
+                           readonly
+                           id="resultInput"
+                           placeholder="Esperando operación..." />
+                    @if (tieneResultado)
+                    {
+                        <span class="result-emoji animate-sparkle">✨</span>
+                    }
                 </div>
             </div>
 
-            <!-- Errores -->
+            <!-- Errores Globales o del Modelo -->
             <div asp-validation-summary="ModelOnly" class="text-danger-modern error-summary"></div>
 
-            <!-- Botones -->
+            <!-- Botones de Acción -->
             <div class="button-group">
                 <button type="submit" class="btn-calculate">
                     <span class="btn-content">
@@ -101,7 +110,7 @@
                         <span class="btn-sparkle">✨</span>
                     </span>
                 </button>
-                <button type="reset" class="btn-reset" onclick="resetCalculator()">
+                <button type="button" class="btn-reset" onclick="resetCalculator()">
                     <span class="btn-content">
                         <span class="btn-icon">🔄</span>
                         <span>LIMPIAR</span>
@@ -110,10 +119,12 @@
             </div>
         </form>
 
-        <!-- Historial -->
+        <!-- Historial (Listo para JS o Backend) -->
         <div class="quick-history" id="quickHistory">
             <span class="history-label">📊 Últimos cálculos:</span>
-            <span class="history-empty">(Los resultados aparecerán aquí)</span>
+            <div class="history-items-container">
+                <span class="history-empty">(Los resultados aparecerán aquí)</span>
+            </div>
         </div>
     </div>
 </div>

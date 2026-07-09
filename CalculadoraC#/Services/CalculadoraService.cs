@@ -20,6 +20,18 @@ namespace CalculadoraC_.Services
 
                 case "*":
                     return numero1 * numero2;
+
+                case "^":
+                    return Math.Pow(numero1, numero2);
+
+                case "%":
+                    if (numero2 == 0)
+                    {
+                        throw new DivideByZeroException("No se puede calcular el módulo entre cero.");
+                    }
+                    var resultado = numero1 * numero2;
+                    return resultado / 100;
+
                 case "/":
                     if (numero2 == 0)
                     {
